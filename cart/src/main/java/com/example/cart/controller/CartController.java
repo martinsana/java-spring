@@ -2,6 +2,7 @@ package com.example.cart.controller;
 
 import com.example.cart.AddProductToCart;
 import com.example.cart.Cart;
+import com.example.cart.domain.AddUserToCart;
 import com.example.cart.service.CartService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,14 @@ public class CartController {
         return cartService.getCart(id);
     }
 
-    @PostMapping("/{cartId}")
+    @PostMapping("/{cartId}/product")
     public Cart addProductToCart(@PathVariable String cartId, @RequestBody AddProductToCart addProductToCart ) {
         return cartService.addProductToCart(addProductToCart.getProductId(), cartId, addProductToCart.getQuantity());
+    }
+
+    @PostMapping("/{cartId}/user")
+    public Cart addUserToCart(@PathVariable String cartId, @RequestBody AddUserToCart addUserToCart ) {
+        return cartService.addUserToCart(addUserToCart.getUserId(), cartId, addUserToCart.getUsername());
     }
 
 }

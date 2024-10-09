@@ -14,10 +14,16 @@ import java.util.Optional;
 @Service
 public class CartService {
 
-    @Autowired
+
     private CartRepository cartRepository;
-    @Autowired
     private ProductService productService;
+    private UserService userService;
+
+    public CartService(CartRepository cartRepository, ProductService productService, UserService userService) {
+        this.cartRepository = cartRepository;
+        this.productService = productService;
+        this.userService = userService;
+    }
 
     public Cart createCart(Cart cart) {
         return cartRepository.save(cart);
@@ -44,4 +50,12 @@ public class CartService {
          cartDetails.getProducts().add(productDetails);
          return cartRepository.save(cartDetails);
     };
+
+    public Cart addUserToCart(String userID, String cartID, String username) {
+        var userDetails = userService.getUserById(userID);
+        userDetails.setUsername(username);
+        var cartDetails =  this.getCart(cartID);
+        cartDetails.setUser(userDetails);
+        return cartRepository.save(cartDetails);
+    }
 }
